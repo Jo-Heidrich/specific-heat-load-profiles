@@ -1,0 +1,23 @@
+data:
+  kind: processed
+  path: data_processed/some_new_features.csv
+  date_col: date
+  target_col: consumption_kWh
+  drop_year: null
+  target_scale: 1.0
+
+bundle:
+  path: models/Aalborg_HEF_hourly_seasonal_legacy.pkl
+
+plot:
+  enabled: true
+  window_days: 7
+  n_windows: 3
+  seed: 42
+  save:
+    enabled: true
+    dir: plots
+    prefix: "predict_hourly_csv"
+
+output:
+  preds_csv: outputs/predict_hourly_predictions.csv

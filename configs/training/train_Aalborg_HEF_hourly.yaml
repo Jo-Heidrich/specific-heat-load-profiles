@@ -1,0 +1,50 @@
+name: Aalborg_HEF_hourly
+
+data:
+  kind: processed
+  path: data/data_processed/energy_consumption_processed_load_profile_HEF.csv
+  date_col: date
+  target_col: consumption_kWh
+  drop_year: 2020
+  target_scale: 8760.0
+
+features:
+  mode: hourly
+
+trainer:
+  type: lgbm
+  params:
+    objective: regression
+    learning_rate: 0.05
+    num_leaves: 31
+    max_depth: 6
+    min_data_in_leaf: 30
+    feature_fraction: 0.85
+    bagging_fraction: 0.9
+    bagging_freq: 1
+    n_estimators: 10000
+    verbose: -1
+    use_log_evaluation: false
+    verbosity: -1
+
+
+training:
+  split: seasonal
+  full_train: true
+  seasonal:
+    variant: legacy
+    n_splits: 6
+    test_frac_each: 0.10
+    min_month_gap: 4
+    seed: 42
+  validation:
+    mode: train_distributed        # off | train | test | train_distributed
+    val_frac: 0.1                  # nur für mode=train (ignored otherwise)
+
+split_index_space:
+  enabled: true
+  freq: "h"
+  start: "2018-01-01 00:00:00"
+  end: "2019-12-31 23:00:00"
+  strict: false
+

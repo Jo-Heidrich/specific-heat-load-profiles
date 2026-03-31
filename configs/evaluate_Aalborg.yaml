@@ -1,0 +1,36 @@
+name: eval_Unna
+
+data:
+  kind: processed
+  path: data/data_processed/Unna_aggregated__consumertype_alltypes__consumption_NoneMWh__constructionyear_None__cluster_all__n0032__features__temp_hourly.csv
+  date_col: date
+  target_col: consumption_kWh
+  holiday_country: Germany    #Germany, Austria, Switzerland, Denmark, Sweden, Norway,                 Netherlands, Belgium, Luxembourg, France, Italy, Spain, Poland, Czechia
+  holiday_subdiv: NW   	      # optional: BW, BY, BE, BB, HB, HH, HE, MV, NI, NW, RP, SL, SN, ST, SH, TH
+  target_scale: 1.0           # Datapoints x need scaling (x*8760)/annual_consumption [kWh] in our framework
+
+features:
+  mode: hourly
+
+bundles:
+  - name: Unna_SFH_daily
+    label: Gradient Boosting daily temperatures
+  - name: Unna_SFH_hourly
+    label: Gradient Boosting hourly temperatures
+
+evaluation:
+  splits_path: outputs/Unna_SFH_hourly/splits.json   # oder daily – müssen identisch sein
+  plot_enabled: true
+  window_days: 7
+  n_windows: 6
+
+  baselines:
+    type: both          # none|rolling24h|linreg|both
+    linreg_features:    # Features für LinReg-Baseline
+      - temperature_hourly
+      - hour_sin
+      - hour_cos
+      - weekday_sin
+      - weekday_cos
+      - month_sin
+      - month_cos

@@ -1,0 +1,22 @@
+bundle:
+  path: models/daily_mean_model.pkl
+
+input:
+  start_date: "2019-01-10"
+  daily_means: [5.0, 12.0, 10.0, 2.0, -4.0]
+  history_means: [-5.0, 2.0]     # optional: für Lag/Trend-Features
+
+schema:
+  date_col: date
+  target_col: consumption_kWh
+  target_scale: 1.0
+
+plot:
+  enabled: true
+  save:
+    enabled: true
+    dir: plots
+    prefix: "predict_dailymeans"
+
+output:
+  preds_csv: outputs/predict_dailymeans_predictions.csv
